@@ -43,6 +43,13 @@ public class Main {
         }
     }
 
+    private static void deleteFiles(String... filesNames) {
+        for(String fileName : filesNames) {
+            File game = new File(fileName);
+            game.delete();
+        }
+    }
+
     private static void zipFiles(String archiveName, String... filesNames) {
         try (ZipOutputStream ioArchiveDevice = new ZipOutputStream(new FileOutputStream(archiveName))) {
             for (String fileName : filesNames) {
@@ -55,7 +62,6 @@ public class Main {
                     System.out.printf("File: %s => Size: %d\n", game.getName(), size);
                     ioArchiveDevice.write(buffer);
                     ioArchiveDevice.closeEntry();
-                    game.delete();
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
                 }
@@ -128,6 +134,7 @@ public class Main {
         saveGame(game3, file3);
         String zip = instDir + "/savegames/games.zip";
         zipFiles(zip, file1, file2, file3);
+        deleteFiles(file1, file2, file3);
         String folder = instDir + "/savegames";
         // Загрузка*
         openZip(zip, folder);
